@@ -9,7 +9,6 @@ const Project = sequelize.define('projects', {
     id: {
         type: Sequelize.INTEGER,
         primaryKey: true
-
     },
     name: {
         type: Sequelize.TEXT
@@ -35,6 +34,6 @@ Project.hasMany(Task, {
 Task.belongsTo(Project, {
     foreignKey: 'projectid',
     sourceKey: 'id'
-})
+});
 
 export default Project;

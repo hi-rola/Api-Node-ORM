@@ -12,6 +12,6 @@ router.put('/:id', updateTask);
 router.get('/:id', getTaskById);
 
 // /api/tasks/projects/projectId
-router.get('/project/:projectid', getTaskByProject);
+router.get('/projects/:projectid', getTaskByProject);
 
 export default router;

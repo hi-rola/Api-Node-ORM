@@ -4,7 +4,8 @@
      try {
          const projects = await Project.findAll({
              order:[
-                 ['id', 'ASC']
+                 ['deliverydate', 'DESC'],
+                 ['id', 'DESC']
              ]
          });
          res.json({
@@ -20,13 +21,13 @@
  }
 
  export async function createProject(req, res) {
-     const {
-         name,
-         priority,
-         description,
-         deliverydate
-     } = req.body;
      try {
+         const {
+             name,
+             priority,
+             description,
+             deliverydate
+         } = req.body;
          let newProject = await Project.create({
              name,
              priority,
@@ -94,7 +95,7 @@
      try {
          const { id } = req.params;
          const { name, priority, description, deliverydate } = req.body;
-
+         
          const projects = await Project.findAll({
              attributes: ['id', 'name', 'priority', 'description', 'deliverydate'],
              where: {
@@ -126,3 +127,43 @@
          });
      }
  }
+
+
+ export async function updateDeliveryDateProject(req, res) {
+    try {
+        const { id } = req.params;
+        let { name, priority, description, deliverydate } = req.body;
+
+        deliverydate = new Date();
+
+        const projects = await Project.findAll({
+            attributes: ['id', 'name', 'priority', 'description', 'deliverydate'],
+            where: {
+                id
+            }
+        });
+
+        if (projects.length > 0) {
+            projects.forEach(async project => {
+                await project.update({
+                    name,
+                    priority,
+                    description,
+                    deliverydate
+                });
+            });
+        }
+
+        res.json({
+            message: 'Project updated successfully',
+            data: projects
+        });
+
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({
+            message: 'Something goes wrong.',
+            data: {}
+        });
+    }
+}
